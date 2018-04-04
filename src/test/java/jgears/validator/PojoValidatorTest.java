@@ -19,7 +19,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-public class PojoValidatorTest extends ValidatorTest {
+public class PojoValidatorTest extends BasicValidatorTest {
 
 	@Test
 	public void testNone() {

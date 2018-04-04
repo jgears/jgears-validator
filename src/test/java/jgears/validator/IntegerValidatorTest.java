@@ -16,7 +16,7 @@ package jgears.validator;
 
 import org.junit.Test;
 
-public class IntegerValidatorTest extends ValidatorTest {
+public class IntegerValidatorTest extends BasicValidatorTest {
 
 	@Test
 	public void testNone() {

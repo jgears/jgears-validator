@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-public class PojoValidator<T> extends Validator<T> {
+public class PojoValidator<T> extends BasicValidator<T> {
 
 	private List<PojoValidatorEntry<Object>> entries = new ArrayList<>();
 

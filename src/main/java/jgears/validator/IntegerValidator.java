@@ -16,7 +16,7 @@ package jgears.validator;
 
 import java.util.List;
 
-public class IntegerValidator extends Validator<Integer> {
+public class IntegerValidator extends BasicValidator<Integer> {
 
 	private Integer minValue;
 	private String minValueMessage;

@@ -18,23 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Validator<T> {
-	
-	protected final String fieldName;
-	
-	protected boolean notNull;
-	protected String notNullMessage;
-	
-	public Validator(String fieldName) {
-		this.fieldName = (fieldName != null && !fieldName.isEmpty()) ? fieldName : "Field";
-	}
-	
-	public Validator<T> notNull() { return notNull(null); }
-	
-	public Validator<T> notNull(String message) {
-		this.notNull = true;
-		this.notNullMessage = msg(message, Messages.MSG_NOT_NULL, fieldName);
-		return this;
-	}
 
 	public final List<String> validate(T value) {
 		List<String> errors = new ArrayList<>();
@@ -42,23 +25,7 @@ public abstract class Validator<T> {
 		return errors;
 	}
 	
-	public final void validate(T value, List<String> errors) {
-		if (value == null) {
-			if (notNull) {
-				errors.add(notNullMessage);
-			}
-			
-		} else {
-			doValidate(value, errors);
-		}
-	}
-	
-	protected abstract void doValidate(T value, List<String> errors);
-	
-	protected String msg(String message, String defaultMessageFormat, Object ... args) {
-		if (message != null && !message.trim().isEmpty()) { return message; }
-		else { return String.format(defaultMessageFormat, args); }
-	}
+	public abstract void validate(T value, List<String> errors);
 	
 	public static IntegerValidator integer() { return new IntegerValidator(null); }
 	public static IntegerValidator integer(String fieldName) { return new IntegerValidator(fieldName); }
@@ -78,4 +45,30 @@ public abstract class Validator<T> {
 	public static <T> CollectionValidator<T> collection(Class<T> cls) { return new CollectionValidator<T>(null); }
 	public static <T> CollectionValidator<T> collection(String fieldName) { return new CollectionValidator<T>(fieldName); }
 	public static <T> CollectionValidator<T> collection(String fieldName, Class<T> cls) { return new CollectionValidator<T>(fieldName); }
+	
+	public static <T> AllValidator<T> all(Class<T> cls) { return new AllValidator<>(null); }
+	public static <T> AllValidator<T> all(Class<T> cls, String message) { return new AllValidator<>(message); }
+	
+	@SafeVarargs
+	public static <T> AllValidator<T> all(Validator<T> ... validators) { return all(null, validators); }
+	
+	@SafeVarargs
+	public static <T> AllValidator<T> all(String message, Validator<T> ... validators) {
+		AllValidator<T> all = new AllValidator<>(message);
+		for (Validator<T> v : validators) { all.add(v); }
+		return all;
+	}
+	
+	public static <T> AnyValidator<T> any(Class<T> cls) { return new AnyValidator<>(null); }
+	public static <T> AnyValidator<T> any(Class<T> cls, String message) { return new AnyValidator<>(message); }
+	
+	@SafeVarargs
+	public static <T> AnyValidator<T> any(Validator<T> ... validators) { return any(null, validators); }
+	
+	@SafeVarargs
+	public static <T> AnyValidator<T> any(String message, Validator<T> ... validators) {
+		AnyValidator<T> any = new AnyValidator<>(message);
+		for (Validator<T> v : validators) { any.add(v); }
+		return any;
+	}
 }

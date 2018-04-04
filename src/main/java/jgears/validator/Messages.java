@@ -24,10 +24,12 @@ class Messages {
 	public static final String MSG_DECIMAL_MIN_VALUE = "%s cannot be less than %.2f.";
 	public static final String MSG_DECIMAL_MAX_VALUE = "%s cannot exceed %.2f.";
 	
+	public static final String MSG_TEXT_NOT_EMPTY = "%s cannot be empty.";
 	public static final String MSG_TEXT_MIN_LENGTH = "%s cannot be less than %d characters long.";
 	public static final String MSG_TEXT_MAX_LENGTH = "%s cannot be more than %d characters long.";
 	public static final String MSG_TEXT_REGEX = "%s is invalid.";
 	
+	public static final String MSG_COLLECTION_NOT_EMPTY = "%s cannot be empty.";
 	public static final String MSG_COLLECTION_MIN_SIZE = "%s cannot contain less than %d items.";
 	public static final String MSG_COLLECTION_MAX_SIZE = "%s cannot contain more than %d items.";
 }

@@ -17,7 +17,10 @@ package jgears.validator;
 import java.util.Collection;
 import java.util.List;
 
-public class CollectionValidator<T> extends Validator<Collection<T>> {
+public class CollectionValidator<T> extends BasicValidator<Collection<T>> {
+	
+	private boolean notEmpty;
+	private String notEmptyMessage;
 	
 	private Integer minSize;
 	private String minSizeMessage;
@@ -34,6 +37,22 @@ public class CollectionValidator<T> extends Validator<Collection<T>> {
 	public CollectionValidator<T> notNull() { return (CollectionValidator<T>) super.notNull(); }
 	
 	public CollectionValidator<T> notNull(String message) { return (CollectionValidator<T>) super.notNull(message); }
+	
+	public CollectionValidator<T> notEmpty() { return notEmpty(null); }
+			
+	public CollectionValidator<T> notEmpty(String message) {
+		this.notEmpty = true;
+		this.notEmptyMessage = msg(message, Messages.MSG_COLLECTION_NOT_EMPTY, fieldName);
+		return this;
+	}
+	
+	public CollectionValidator<T> notNullOrEmpty() { return notNullOrEmpty(null); }
+	
+	public CollectionValidator<T> notNullOrEmpty(String message) {
+		this.notNull(message);
+		this.notEmpty(message);
+		return this;
+	}
 	
 	public CollectionValidator<T> minSize(int minSize) {
 		return minSize(minSize, null);
@@ -62,6 +81,10 @@ public class CollectionValidator<T> extends Validator<Collection<T>> {
 	
 	@Override
 	protected void doValidate(Collection<T> value, List<String> errors) {
+		if (notEmpty && value.isEmpty()) {
+			errors.add(notEmptyMessage);
+		}
+		
 		if (minSize != null && value.size() < minSize) {
 			errors.add(minSizeMessage);
 		}

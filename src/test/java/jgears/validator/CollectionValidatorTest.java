@@ -16,10 +16,11 @@ package jgears.validator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.junit.Test;
 
-public class CollectionValidatorTest extends ValidatorTest {
+public class CollectionValidatorTest extends BasicValidatorTest {
 
 	@Test
 	public void testNone() {
@@ -29,6 +30,23 @@ public class CollectionValidatorTest extends ValidatorTest {
 	@Test
 	public void testNotNull() {
 		testNotNull(() -> Validator.collection(), () -> Validator.collection(CUSTOM_FIELD_NAME), new ArrayList<Object>());
+	}
+	
+	@Test
+	public void testNotEmpty() {
+		CollectionValidator<Object> v;
+		
+		v = Validator.collection().notEmpty();
+		assertValid(v, Arrays.asList(new Object()));
+		assertInvalid(v, Collections.emptyList(), "Field cannot be empty.");
+		
+		v = Validator.collection(CUSTOM_FIELD_NAME).notEmpty();
+		assertValid(v, Arrays.asList(new Object()));
+		assertInvalid(v, Collections.emptyList(), CUSTOM_FIELD_NAME + " cannot be empty.");
+		
+		v = Validator.collection().notEmpty(CUSTOM_MESSAGE);
+		assertValid(v, Arrays.asList(new Object()));
+		assertInvalid(v, Collections.emptyList(), CUSTOM_MESSAGE);
 	}
 	
 	@Test

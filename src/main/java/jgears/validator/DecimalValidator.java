@@ -16,7 +16,7 @@ package jgears.validator;
 
 import java.util.List;
 
-public class DecimalValidator extends Validator<Double> {
+public class DecimalValidator extends BasicValidator<Double> {
 
 	private Double minValue;
 	private String minValueMessage;

@@ -16,7 +16,7 @@ package jgears.validator;
 
 import org.junit.Test;
 
-public class DecimalValidatorTest extends ValidatorTest {
+public class DecimalValidatorTest extends BasicValidatorTest {
 
 	@Test
 	public void testNone() {

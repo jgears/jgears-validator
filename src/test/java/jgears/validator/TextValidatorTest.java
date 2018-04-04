@@ -16,7 +16,7 @@ package jgears.validator;
 
 import org.junit.Test;
 
-public class TextValidatorTest extends ValidatorTest {
+public class TextValidatorTest extends BasicValidatorTest {
 
 	@Test
 	public void testNone() {
@@ -26,6 +26,23 @@ public class TextValidatorTest extends ValidatorTest {
 	@Test
 	public void testNotNull() {
 		testNotNull(() -> Validator.text(), () -> Validator.text(CUSTOM_FIELD_NAME), "");
+	}
+	
+	@Test
+	public void testNotEmpty() {
+		TextValidator v;
+		
+		v = Validator.text().notEmpty();
+		assertValid(v, "x");
+		assertInvalid(v, "", "Field cannot be empty.");
+		
+		v = Validator.text(CUSTOM_FIELD_NAME).notEmpty();
+		assertValid(v, "x");
+		assertInvalid(v, "", CUSTOM_FIELD_NAME + " cannot be empty.");
+		
+		v = Validator.text().notEmpty(CUSTOM_MESSAGE);
+		assertValid(v, "x");
+		assertInvalid(v, "", CUSTOM_MESSAGE);
 	}
 	
 	@Test

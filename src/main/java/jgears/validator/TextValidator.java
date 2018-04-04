@@ -16,8 +16,11 @@ package jgears.validator;
 
 import java.util.List;
 
-public class TextValidator extends Validator<String> {
+public class TextValidator extends BasicValidator<String> {
 
+	private boolean notEmpty;
+	private String notEmptyMessage;
+	
 	private Integer minLength;
 	private String minLengthMessage;
 	
@@ -34,6 +37,22 @@ public class TextValidator extends Validator<String> {
 	public TextValidator notNull() { return (TextValidator) super.notNull(); }
 	
 	public TextValidator notNull(String message) { return (TextValidator) super.notNull(message); }
+	
+	public TextValidator notEmpty() { return notEmpty(null); }
+			
+	public TextValidator notEmpty(String message) {
+		this.notEmpty = true;
+		this.notEmptyMessage = msg(message, Messages.MSG_TEXT_NOT_EMPTY, fieldName);
+		return this;
+	}
+	
+	public TextValidator notNullOrEmpty() { return notNullOrEmpty(null); }
+	
+	public TextValidator notNullOrEmpty(String message) {
+		this.notNull(message);
+		this.notEmpty(message);
+		return this;
+	}
 	
 	public TextValidator minLength(int minLength) {
 		return minLength(minLength, null);
@@ -67,6 +86,10 @@ public class TextValidator extends Validator<String> {
 
 	@Override
 	protected void doValidate(String value, List<String> errors) {
+		if (notEmpty && value.isEmpty()) {
+			errors.add(notEmptyMessage);
+		}
+		
 		if (minLength != null && value.length() < minLength) {
 			errors.add(minLengthMessage);
 		}
